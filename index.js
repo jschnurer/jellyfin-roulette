@@ -25,14 +25,20 @@ async function findRandomMovie() {
 
             collectionInfo.movies.forEach(x => {
                 allOutput += `\n${x.Id === chosenMovie.Id ? "---> " : ""}${x.title} (${new Date(x.PremiereDate).getFullYear()}) - ${x.watched === undefined
-                        ? "NOT IN LIBRARY"
-                        : (x.watched ? "WATCHED" : "NOT WATCHED")
+                    ? "NOT IN LIBRARY"
+                    : (x.watched ? "WATCHED" : "NOT WATCHED")
                     }`;
             });
         }
     }
 
     console.log(allOutput);
+
+    // If this script is being called by another, send the output to the caller as well.
+    if (process
+        && process.send) {
+        process.send(allOutput);
+    }
 }
 
 async function getAllJellyfinMovies() {
